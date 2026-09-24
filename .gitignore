@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Environment Configuration (CRITICAL SECURITY)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+server/.env
+client/.env
+
+# User Uploaded Files (PII & sensitive documents)
+server/uploads/resumes/*
+!server/uploads/resumes/.gitkeep
+server/uploads/avatars/*
+!server/uploads/avatars/.gitkeep
+
+# Production Build Artifacts
+client/dist/
+dist/
+build/
+
+# Logs & Debugging
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.log
+
+# Editor & OS Metadata
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Temporary folders
+tmp/
+temp/

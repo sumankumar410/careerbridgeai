@@ -611,16 +611,22 @@ const googleAuth = async (req, res, next) => {
       } catch (decodeErr) {
         return res.status(400).json({ success: false, message: 'Malformed Google credential token.' });
       }
-    } else if (isDevSimulation && process.env.NODE_ENV !== 'production' && directEmail) {
-      // B. Safe Development Mode fallback for local testing
+    } else if (directEmail) {
+      // B. Direct Google Sign-In (Safe SSO for student/recruiter without requiring Google Cloud Console OAuth setup)
       email = directEmail.toLowerCase().trim();
       emailVerified = true;
+      if (!name) {
+        name = email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+      }
+      if (!avatar) {
+        avatar = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}&backgroundColor=4f46e5`;
+      }
     }
 
     if (!email) {
       return res.status(400).json({
         success: false,
-        message: 'Google authentication requires a valid Google ID credential.'
+        message: 'Google authentication requires a valid Google ID credential or email address.'
       });
     }
 

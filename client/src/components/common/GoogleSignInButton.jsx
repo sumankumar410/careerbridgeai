@@ -135,6 +135,27 @@ const GoogleSignInButton = ({ text = 'Continue with Google', role = 'student', o
             </div>
 
             <form onSubmit={handleInstantGoogleSubmit} className="space-y-3 pt-1">
+              {/* Quick One-Click Accounts */}
+              <div className="space-y-1.5">
+                <span className="text-[11px] font-medium text-slate-500">Quick Select Account:</span>
+                <div className="flex flex-wrap gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => { setEmail('sumankumar410@gmail.com'); setName('Suman Kumar'); }}
+                    className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-[11px] font-medium text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-slate-700 hover:text-indigo-600 transition-colors"
+                  >
+                    sumankumar410@gmail.com
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setEmail('student@careerbridge.com'); setName('Demo Student'); }}
+                    className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-[11px] font-medium text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-slate-700 hover:text-indigo-600 transition-colors"
+                  >
+                    student@careerbridge.com
+                  </button>
+                </div>
+              </div>
+
               <div>
                 <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                   Google Email Address *

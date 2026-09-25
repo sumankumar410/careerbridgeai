@@ -82,6 +82,9 @@ const LoginPage = () => {
         setOtpSent(true);
         setOtpTimer(30);
         setSuccessMsg(res.message);
+        if (res.demoOtp) {
+          setOtp(res.demoOtp);
+        }
       }
     } catch (err) {
       setError(err.message || 'Could not send verification code.');

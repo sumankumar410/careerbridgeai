@@ -130,6 +130,9 @@ const RegisterPage = () => {
         setOtpStep(true);
         setOtpTimer(30);
         setSuccessMsg(res.message);
+        if (res.demoOtp) {
+          setOtp(res.demoOtp);
+        }
       }
     } catch (err) {
       setError(err.message || 'Failed to send verification code.');

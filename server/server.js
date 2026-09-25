@@ -43,7 +43,8 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
+    const isVercel = origin && origin.endsWith('.vercel.app');
+    if (!origin || allowedOrigins.includes(origin) || isVercel || process.env.NODE_ENV !== 'production') {
       callback(null, true);
     } else {
       callback(new Error('Blocked by CORS Security Policy'));

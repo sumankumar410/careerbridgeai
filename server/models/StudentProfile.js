@@ -13,7 +13,7 @@ const studentProfileSchema = new mongoose.Schema({
   degree: { type: String, default: 'B.Tech' },
   branch: { 
     type: String, 
-    enum: ['CSE', 'IT', 'ECE', 'EEE', 'MECH', 'CIVIL', 'OTHER'],
+    enum: ['CSE', 'Computer Science', 'IT', 'ECE', 'EEE', 'MECH', 'CIVIL', 'OTHER'],
     default: 'CSE' 
   },
   cgpa: { type: Number, min: 0, max: 10, default: 0 },

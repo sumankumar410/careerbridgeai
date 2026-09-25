@@ -678,7 +678,7 @@ const googleAuth = async (req, res, next) => {
           user: user._id,
           college: 'Engineering Institute',
           degree: 'B.Tech',
-          branch: 'Computer Science',
+          branch: 'CSE',
           gradYear: 2026
         });
       }

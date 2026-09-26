@@ -17,11 +17,35 @@ const GoogleSignInButton = ({ text = 'Continue with Google', role = 'student', o
     else navigate('/student/dashboard');
   };
 
+  React.useEffect(() => {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    if (clientId && window.google?.accounts?.id) {
+      try {
+        window.google.accounts.id.initialize({
+          client_id: clientId,
+          callback: async (response) => {
+            try {
+              setLoading(true);
+              const res = await loginWithGoogle({ credential: response.credential, role });
+              if (res?.user) redirectByRole(res.user);
+            } catch (err) {
+              if (onError) onError(err.message || 'Google sign-in failed');
+            } finally {
+              setLoading(false);
+            }
+          }
+        });
+      } catch (e) {
+        console.error('Google GIS Init Error:', e);
+      }
+    }
+  }, [role]);
+
   const handleGoogleClick = () => {
-    // Check if Google Client ID is configured in client env
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
     if (clientId && window.google?.accounts?.id) {
+      setLoading(true);
       window.google.accounts.id.initialize({
         client_id: clientId,
         callback: async (response) => {
@@ -36,9 +60,52 @@ const GoogleSignInButton = ({ text = 'Continue with Google', role = 'student', o
           }
         }
       });
-      window.google.accounts.id.prompt();
+
+      // Prompt One-Tap / Account Chooser Popup
+      window.google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment() || notification.isDismissedMoment()) {
+          setLoading(false);
+          // Fallback to OAuth2 Token Client Popup if One Tap was dismissed by browser
+          if (window.google?.accounts?.oauth2) {
+            const tokenClient = window.google.accounts.oauth2.initTokenClient({
+              client_id: clientId,
+              scope: 'email profile openid',
+              callback: async (tokenResponse) => {
+                if (tokenResponse.access_token) {
+                  try {
+                    setLoading(true);
+                    // Fetch profile info using access token
+                    const userInfoRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                      headers: { Authorization: `Bearer ${tokenResponse.access_token}` }
+                    });
+                    const userInfo = await userInfoRes.json();
+                    if (userInfo.email) {
+                      const res = await loginWithGoogle({
+                        email: userInfo.email,
+                        name: userInfo.name || userInfo.given_name,
+                        avatar: userInfo.picture,
+                        role,
+                        isDevSimulation: true
+                      });
+                      if (res?.user) redirectByRole(res.user);
+                    }
+                  } catch (err) {
+                    if (onError) onError(err.message || 'Google token verification failed');
+                  } finally {
+                    setLoading(false);
+                  }
+                }
+              }
+            });
+            tokenClient.requestAccessToken();
+          } else {
+            setShowModal(true);
+          }
+        } else {
+          setLoading(false);
+        }
+      });
     } else {
-      // Open instant Google Sign-In prompt modal
       setShowModal(true);
     }
   };

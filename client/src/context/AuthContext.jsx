@@ -121,7 +121,8 @@ export const AuthProvider = ({ children }) => {
   const updateProfile = async (updatedData) => {
     const res = await api.put('/auth/student-profile', updatedData);
     if (res.success) {
-      setProfile(res.profile);
+      if (res.user) setUser(res.user);
+      if (res.profile) setProfile(res.profile);
       return res;
     }
   };

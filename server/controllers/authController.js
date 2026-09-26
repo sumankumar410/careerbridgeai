@@ -542,7 +542,7 @@ const getMe = async (req, res, next) => {
   }
 };
 
-// 8. Update Student Profile
+// 8. Update Student Profile & User Information
 const updateStudentProfile = async (req, res, next) => {
   try {
     let profile = await StudentProfile.findOne({ user: req.user.id });
@@ -551,10 +551,32 @@ const updateStudentProfile = async (req, res, next) => {
       profile = new StudentProfile({ user: req.user.id });
     }
 
+    // Update User model fields if provided (name, phone, avatar)
+    const user = await User.findById(req.user.id);
+    let userUpdated = false;
+    if (user) {
+      if (req.body.name !== undefined && req.body.name.trim() !== '') {
+        user.name = req.body.name.trim();
+        userUpdated = true;
+      }
+      if (req.body.phone !== undefined) {
+        user.phone = req.body.phone;
+        userUpdated = true;
+      }
+      if (req.body.avatar !== undefined) {
+        user.avatar = req.body.avatar;
+        userUpdated = true;
+      }
+      if (userUpdated) {
+        await user.save();
+      }
+    }
+
     const allowedFields = [
       'phone', 'location', 'college', 'degree', 'branch', 'cgpa',
       'gradYear', 'skills', 'softSkills', 'projects', 'experience',
-      'certifications', 'achievements', 'languages', 'placementStatus'
+      'certifications', 'achievements', 'languages', 'placementStatus',
+      'resumeUrl', 'resumeOriginalName'
     ];
 
     allowedFields.forEach(field => {
@@ -565,9 +587,12 @@ const updateStudentProfile = async (req, res, next) => {
 
     await profile.save();
 
+    const updatedUser = await User.findById(req.user.id);
+
     res.status(200).json({
       success: true,
       message: 'Profile updated successfully',
+      user: updatedUser,
       profile
     });
   } catch (error) {

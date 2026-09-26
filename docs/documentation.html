@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CareerBridgeAI - Full Technical Documentation & Architecture Report</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    @page {
+      size: A4 portrait;
+      margin: 18mm 16mm 18mm 16mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      line-height: 1.6;
+      font-size: 13.5px;
+    }
+
+    .page {
+      padding: 10px 0;
+    }
+
+    .page-break {
+      page-break-after: always;
+      break-after: page;
+    }
+
+    .no-break {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    /* Cover Page */
+    .cover-page {
+      min-height: 900px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 2px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 50px 40px;
+      background: linear-gradient(145deg, #f8fafc 0%, #eef2ff 50%, #ffffff 100%);
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .cover-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: #4f46e5;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      border-radius: 9999px;
+      width: fit-content;
+    }
+
+    .cover-title {
+      font-size: 38px;
+      font-weight: 900;
+      line-height: 1.15;
+      color: #0f172a;
+      letter-spacing: -1px;
+      margin-top: 25px;
+    }
+
+    .cover-title span {
+      background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .cover-subtitle {
+      font-size: 17px;
+      font-weight: 500;
+      color: #475569;
+      margin-top: 14px;
+      max-width: 600px;
+    }
+
+    .cover-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 40px 0;
+    }
+
+    .cover-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+
+    .cover-card h4 {
+      font-size: 11px;
+      color: #64748b;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .cover-card p {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .cover-footer {
+      border-top: 2px solid #e2e8f0;
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    /* Headings */
+    h1, h2, h3, h4 {
+      color: #0f172a;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    h2 {
+      font-size: 20px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
+      margin: 28px 0 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h2::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 20px;
+      background: #4f46e5;
+      border-radius: 3px;
+    }
+
+    h3 {
+      font-size: 15px;
+      margin: 18px 0 8px 0;
+      color: #1e293b;
+    }
+
+    p {
+      margin-bottom: 12px;
+      color: #334155;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 12.5px;
+      page-break-inside: avoid;
+    }
+
+    th, td {
+      padding: 9px 12px;
+      text-align: left;
+      border: 1px solid #e2e8f0;
+    }
+
+    th {
+      background: #f1f5f9;
+      font-weight: 700;
+      color: #1e293b;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    /* Cards & Boxes */
+    .feature-box {
+      background: #f8fafc;
+      border-left: 4px solid #4f46e5;
+      padding: 14px 18px;
+      margin: 14px 0;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .feature-box.success {
+      border-left-color: #10b981;
+      background: #f0fdf4;
+    }
+
+    .feature-box.warning {
+      border-left-color: #f59e0b;
+      background: #fffbeb;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 14px 0;
+      page-break-inside: avoid;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin: 14px 0;
+      page-break-inside: avoid;
+    }
+
+    .card {
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 14px;
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    .card-header {
+      font-weight: 700;
+      font-size: 13.5px;
+      color: #4f46e5;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Diagrams & Code */
+    .flow-diagram {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      font-size: 11px;
+      padding: 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+      line-height: 1.45;
+      overflow-x: auto;
+      page-break-inside: avoid;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      font-size: 11.5px;
+      background: #f1f5f9;
+      color: #4f46e5;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+    }
+
+    ul, ol {
+      margin: 10px 0 14px 24px;
+      color: #334155;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-green { background: #dcfce7; color: #15803d; }
+    .badge-blue { background: #e0e7ff; color: #4338ca; }
+    .badge-purple { background: #f3e8ff; color: #7e22ce; }
+    .badge-amber { background: #fef3c7; color: #b45309; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #94a3b8;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 6px;
+      margin-bottom: 20px;
+    }
+
+    .footer-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10.5px;
+      color: #94a3b8;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 8px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== COVER PAGE ==================== -->
+  <div class="cover-page page-break">
+    <div>
+      <div class="cover-badge">🚀 Complete Technical Architecture Report</div>
+      <h1 class="cover-title">CareerBridge<span>AI</span></h1>
+      <p class="cover-subtitle">Next-Generation AI-Powered Campus Placement & Job Discovery Platform</p>
+      
+      <div style="margin-top: 20px;">
+        <span class="badge badge-green" style="font-size: 12px; padding: 4px 12px;">Production Grade</span>
+        <span class="badge badge-blue" style="font-size: 12px; padding: 4px 12px; margin-left: 6px;">MERN Stack + GenAI</span>
+        <span class="badge badge-purple" style="font-size: 12px; padding: 4px 12px; margin-left: 6px;">100% Live & Deployed</span>
+      </div>
+    </div>
+
+    <div class="cover-grid">
+      <div class="cover-card">
+        <h4>Developer / Creator</h4>
+        <p>Suman Kumar</p>
+      </div>
+      <div class="cover-card">
+        <h4>Core Technology</h4>
+        <p>MERN Stack & Google Gemini AI</p>
+      </div>
+      <div class="cover-card">
+        <h4>Live Frontend (Vercel)</h4>
+        <p style="font-size: 12px; word-break: break-all;">careerbridgeai-coral.vercel.app</p>
+      </div>
+      <div class="cover-card">
+        <h4>Live Backend API (Render)</h4>
+        <p style="font-size: 12px; word-break: break-all;">careerbridgeai-ylvb.onrender.com</p>
+      </div>
+    </div>
+
+    <div class="cover-footer">
+      <div>© 2026 CareerBridgeAI. All rights reserved.</div>
+      <div>Confidential Technical & System Design Dossier</div>
+    </div>
+  </div>
+
+  <!-- ==================== SECTION 1: EXECUTIVE SUMMARY ==================== -->
+  <div class="page page-break">
+    <div class="header-bar">
+      <span>CareerBridgeAI Technical Dossier</span>
+      <span>Executive Summary</span>
+    </div>
+
+    <h2>1. Executive Summary & Overview</h2>
+    <p>
+      <strong>CareerBridgeAI</strong> is a comprehensive, production-grade cloud ecosystem designed to bridge the gap between higher education institutions, graduating students, corporate recruiters, and placement officers (TPOs).
+    </p>
+    <p>
+      By integrating state-of-the-art Generative AI (Google Gemini LLM), CareerBridgeAI automates traditional manual workflows such as Resume ATS Evaluation, Domain-Specific Mock Interviews, Campus Placement Eligibility Checks, and Candidate Tracking.
+    </p>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header">🎯 The Problem Addressed</div>
+        <ul style="font-size: 12px; margin-left: 16px;">
+          <li>Manual resume screening takes hours and lacks objective feedback for students.</li>
+          <li>Lack of personalized, on-demand interview preparation for tier-2/3 college students.</li>
+          <li>Disconnected placement operations between College TPOs, Corporate HRs, and Students.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header">💡 The Solution Delivered</div>
+        <ul style="font-size: 12px; margin-left: 16px;">
+          <li>Instant AI Resume ATS Scoring with PDF parsing, keyword gaps, and bullet rewrites.</li>
+          <li>Interactive AI Mock Interviews with voice/text evaluation and model answers.</li>
+          <li>Unified 4-role portal: Student, Recruiter, TPO, and Master Admin.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>2. Complete Technology Stack Matrix</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Tier / Component</th>
+          <th>Technology Selected</th>
+          <th>Primary Responsibility</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Client Interface</strong></td>
+          <td>React.js 18+ (SPA)</td>
+          <td>Component-based reactive UI, client-side caching & state management</td>
+        </tr>
+        <tr>
+          <td><strong>Build System</strong></td>
+          <td>Vite Bundler</td>
+          <td>Sub-second Hot Module Replacement (HMR) and optimized minified chunks</td>
+        </tr>
+        <tr>
+          <td><strong>Design & CSS</strong></td>
+          <td>Tailwind CSS</td>
+          <td>Utility-first responsive design, dynamic dark/light mode toggle</td>
+        </tr>
+        <tr>
+          <td><strong>API Layer</strong></td>
+          <td>Node.js & Express.js</td>
+          <td>High-throughput asynchronous RESTful API architecture</td>
+        </tr>
+        <tr>
+          <td><strong>Cloud Database</strong></td>
+          <td>MongoDB Atlas</td>
+          <td>Managed NoSQL document database, automated failover, TTL indexing</td>
+        </tr>
+        <tr>
+          <td><strong>Data Modeling</strong></td>
+          <td>Mongoose ODM</td>
+          <td>Strict schema validation, pre-save encryption hooks, relationship refs</td>
+        </tr>
+        <tr>
+          <td><strong>Generative AI</strong></td>
+          <td>Google Gemini AI SDK</td>
+          <td>Resume ATS extraction, answer quality scoring, career advice NLP</td>
+        </tr>
+        <tr>
+          <td><strong>Binary PDF Parsing</strong></td>
+          <td>pdf-parse</td>
+          <td>Stream-based text extraction from uploaded PDF resumes</td>
+        </tr>
+        <tr>
+          <td><strong>Multipart Uploads</strong></td>
+          <td>Multer Storage Engine</td>
+          <td>Cryptographic randomized disk storage, MIME and file size enforcement</td>
+        </tr>
+        <tr>
+          <td><strong>Authentication</strong></td>
+          <td>JWT (JSON Web Token)</td>
+          <td>Stateless 7-day bearer tokens with role-based access validation</td>
+        </tr>
+        <tr>
+          <td><strong>Password Security</strong></td>
+          <td>Bcrypt.js (10 Rounds)</td>
+          <td>One-way salted cryptographic password hashing</td>
+        </tr>
+        <tr>
+          <td><strong>Traffic Limiting</strong></td>
+          <td>express-rate-limit</td>
+          <td>4-tier rate limiters protecting against DoS and brute-force attacks</td>
+        </tr>
+        <tr>
+          <td><strong>HTTP Security</strong></td>
+          <td>Helmet.js</td>
+          <td>HTTP security headers against XSS, clickjacking, and MIME sniffing</td>
+        </tr>
+        <tr>
+          <td><strong>Hosting & Edge CDN</strong></td>
+          <td>Vercel (Client) + Render (API)</td>
+          <td>Automatic Git CI/CD deployments with Edge CDN and SSL termination</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="footer-bar">
+      <span>CareerBridgeAI Documentation</span>
+      <span>Page 2 of 6</span>
+    </div>
+  </div>
+
+  <!-- ==================== SECTION 3: SYSTEM ARCHITECTURE ==================== -->
+  <div class="page page-break">
+    <div class="header-bar">
+      <span>CareerBridgeAI Technical Dossier</span>
+      <span>System Architecture & Workflows</span>
+    </div>
+
+    <h2>3. System Architecture & Information Flow</h2>
+    <p>
+      The architecture follows a decoupled, stateless Client-Server model. All requests from the Vercel-hosted React frontend communicate via HTTPS REST endpoints with the Render-hosted Express backend.
+    </p>
+
+    <div class="flow-diagram">
++---------------------------------------------------------------------------------+
+|                                USER INTERFACE                                   |
+|   [Student Portal]    [Recruiter Portal]     [TPO Portal]     [Admin Console]   |
++----------------------------------------+----------------------------------------+
+                                         | HTTPS / JSON / Multipart
+                                         v
++---------------------------------------------------------------------------------+
+|                           EXPRESS.JS API GATEWAY                                |
+|  +------------------+  +-------------------+  +-------------------------------+ |
+|  | Helmet Security  |  | CORS Whitelisting |  | 4-Tier Rate Limiting Engines  | |
+|  +------------------+  +-------------------+  +-------------------------------+ |
+|  +----------------------------------------------------------------------------+ |
+|  |           Authentication Middleware (JWT Verification & RBAC Guards)       | |
+|  +----------------------------------------------------------------------------+ |
++-------+--------------------+---------------------+--------------------+---------+
+        |                    |                     |                    |
+        v                    v                     v                    v
++---------------+    +---------------+     +---------------+    +---------------+
+| Auth Service  |    | Jobs & Apply  |     | AI Engine     |    | Admin Service |
+| (Password/OTP)|    | Controller    |     | (Gemini & PDF)|    | & Stats Agg.  |
++-------+-------+    +-------+-------+     +-------+-------+    +-------+-------+
+        |                    |                     |                    |
+        +--------------------+----------+----------+--------------------+
+                                        | Mongoose ODM
+                                        v
++---------------------------------------------------------------------------------+
+|                       MONGODB ATLAS CLOUD REPLICA SET                           |
+|  [users]  [studentprofiles]  [jobs]  [applications]  [placementdrives]  [otps]  |
++---------------------------------------------------------------------------------+
+    </div>
+
+    <h2>4. Multi-Role User Workflows (चार प्रमुख यूज़र रोल्स)</h2>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header">👨‍🎓 1. Student Journey</div>
+        <p style="font-size: 12px; color: #475569;">
+          <strong>Onboarding:</strong> Register via Instant Form, OTP, or Google SSO.<br>
+          <strong>Resume Check:</strong> Upload PDF resume to receive a real-time ATS score (0-100), missing skills, and formatting tips.<br>
+          <strong>Job Discovery:</strong> Filter jobs by domain, salary, and eligibility. 1-click apply with automated profile linking.<br>
+          <strong>Interview Prep:</strong> Practice domain questions with voice/text feedback from AI.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">💼 2. Recruiter Journey</div>
+        <p style="font-size: 12px; color: #475569;">
+          <strong>Job Posting:</strong> Post openings with detailed criteria (min CGPA, branch, passout year, salary range).<br>
+          <strong>Application Review:</strong> View applicant queue with real-time stats.<br>
+          <strong>PDF Resume Viewer:</strong> Open and inspect student resumes directly in the browser.<br>
+          <strong>Status Pipeline:</strong> Update status from Applied to Shortlisted, Interviewed, or Hired.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">🏛️ 3. College TPO Journey</div>
+        <p style="font-size: 12px; color: #475569;">
+          <strong>Campus Drives:</strong> Create on-campus recruitment drives with strict registration deadlines.<br>
+          <strong>Eligibility Enforcement:</strong> Auto-verify students' academic standing against company criteria.<br>
+          <strong>Placement Analytics:</strong> Track total placed students, branch-wise percentages, and top recruiting companies.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">🛡️ 4. Master Admin Console</div>
+        <p style="font-size: 12px; color: #475569;">
+          <strong>Isolated Route:</strong> Dedicated <code>/admin/login</code> path protected from public SSO bypass.<br>
+          <strong>User Governance:</strong> Oversee all students, recruiters, and TPOs; change roles or instantly block malicious users.<br>
+          <strong>Content Moderation:</strong> Audit posted jobs, edit/delete platform questions, and view global KPIs.
+        </p>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <span>CareerBridgeAI Documentation</span>
+      <span>Page 3 of 6</span>
+    </div>
+  </div>
+
+  <!-- ==================== SECTION 4: AI ENGINE & DATABASE ==================== -->
+  <div class="page page-break">
+    <div class="header-bar">
+      <span>CareerBridgeAI Technical Dossier</span>
+      <span>AI Engine & Data Modeling</span>
+    </div>
+
+    <h2>5. AI Engine Deep-Dive (Google Gemini Integration)</h2>
+    <div class="feature-box">
+      <h3>🤖 How the AI Resume ATS Scoring Works:</h3>
+      <ol style="font-size: 12.5px; margin-left: 20px;">
+        <li><strong>Multer Pipeline:</strong> Accepts multipart/form-data with strict binary verification (MIME: <code>application/pdf</code>, size &le; 10MB).</li>
+        <li><strong>PDF Text Extraction:</strong> <code>pdf-parse</code> extracts clean text streams, handling multi-column layouts, font encodings, and headers.</li>
+        <li><strong>Prompt Engineering:</strong> The extracted text is injected into a specialized prompt instructing Gemini to evaluate against industry standard ATS criteria:
+          <code>Format Compliance (20%), Keyword Density (30%), Experience Impact (30%), Education (20%)</code>.</li>
+        <li><strong>Structured JSON Output:</strong> The model returns a strictly formatted JSON object containing:
+          <code>overallScore</code>, <code>matchRate</code>, <code>missingKeywords[]</code>, <code>strengths[]</code>, and <code>actionableImprovements[]</code>.</li>
+      </ol>
+    </div>
+
+    <div class="feature-box success">
+      <h3>🎙️ How the AI Mock Interview Evaluator Works:</h3>
+      <p style="font-size: 12.5px;">
+        Students can type or speak their answers. The backend sends the question, role domain, and student's transcribed response to Gemini. The model analyzes:
+        <br>
+        &bull; <strong>Technical Accuracy (0-10)</strong> &nbsp;|&nbsp; 
+        &bull; <strong>Communication Clarity</strong> &nbsp;|&nbsp; 
+        &bull; <strong>Ideal Model Answer (Best Practice Answer)</strong>
+      </p>
+    </div>
+
+    <h2>6. MongoDB Schema Architecture (Data Models)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Collection</th>
+          <th>Key Fields & Types</th>
+          <th>Relationships & Indexes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>users</code></td>
+          <td>name (String), email (String, unique), password (String, select: false), role (Enum: student/recruiter/tpo/admin), status (Enum: active/blocked)</td>
+          <td>Primary authentication entity. Linked to StudentProfile via <code>_id</code>.</td>
+        </tr>
+        <tr>
+          <td><code>studentprofiles</code></td>
+          <td>user (ObjectId &rarr; User), college, degree, branch (Enum: CSE, IT, ECE, etc.), cgpa (Number), gradYear (Number), skills[], projects[]</td>
+          <td>1-to-1 relationship with <code>User</code>. Indexed by <code>user</code> (unique).</td>
+        </tr>
+        <tr>
+          <td><code>jobs</code></td>
+          <td>title, companyName, location, jobType, salary, minCgpa, eligibleBranches[], description, postedBy (ObjectId &rarr; User), status (active/closed)</td>
+          <td>1-to-many relationship with <code>Application</code>. Indexed by <code>status</code>.</td>
+        </tr>
+        <tr>
+          <td><code>applications</code></td>
+          <td>job (ObjectId &rarr; Job), applicant (ObjectId &rarr; User), resumeUrl (String), status (Enum: applied/shortlisted/interview/hired/rejected)</td>
+          <td>Compound index on <code>{ job: 1, applicant: 1 }</code> (Prevents duplicate applications).</td>
+        </tr>
+        <tr>
+          <td><code>placementdrives</code></td>
+          <td>title, company, driveDate, minCgpa, eligibleBranches[], registeredStudents[] (ObjectId[] &rarr; User), venue, status</td>
+          <td>Managed by College TPOs for campus placements.</td>
+        </tr>
+        <tr>
+          <td><code>interviewquestions</code></td>
+          <td>question, domain (Frontend, Backend, DevOps, Data Science), difficulty, idealAnswer</td>
+          <td>Indexed by <code>domain</code> for sub-second question retrieval.</td>
+        </tr>
+        <tr>
+          <td><code>otps</code></td>
+          <td>identifier (String), type (email/mobile), otp (String), purpose (login/register), createdAt (Date)</td>
+          <td><strong>TTL Index:</strong> <code>{ createdAt: 1 }, { expireAfterSeconds: 600 }</code> (Auto-deletes after 10 min).</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="footer-bar">
+      <span>CareerBridgeAI Documentation</span>
+      <span>Page 4 of 6</span>
+    </div>
+  </div>
+
+  <!-- ==================== SECTION 5: SECURITY & DEPLOYMENT ==================== -->
+  <div class="page page-break">
+    <div class="header-bar">
+      <span>CareerBridgeAI Technical Dossier</span>
+      <span>Security & Cloud Deployment</span>
+    </div>
+
+    <h2>7. Security Architecture & OWASP Defense Matrix</h2>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header">🛡️ 1. Authentication & RBAC</div>
+        <ul style="font-size: 11.5px; margin-left: 16px;">
+          <li><strong>Bcrypt Hashing:</strong> 10 salt rounds one-way hash prevents rainbow table attacks.</li>
+          <li><strong>Password Leak Guard:</strong> <code>select: false</code> ensures passwords never leave database in API queries.</li>
+          <li><strong>JWT Authorization:</strong> Stateless 7-day tokens signed with strong secret.</li>
+          <li><strong>Role Isolation:</strong> Admin routes strictly reject non-admin JWT payloads.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">📁 2. File Upload Defense (Multer)</div>
+        <ul style="font-size: 11.5px; margin-left: 16px;">
+          <li><strong>Cryptographic Filenames:</strong> 16-byte random hex names prevent Path Traversal (<code>../../</code>) attacks.</li>
+          <li><strong>MIME & Extension Lock:</strong> Both <code>.pdf</code> and <code>application/pdf</code> verified; non-PDFs rejected.</li>
+          <li><strong>File Size Cap:</strong> Strictly enforced 10MB limit protects server memory.</li>
+          <li><strong>No-Sniff CSP:</strong> Static uploads served with <code>nosniff</code> and CSP <code>none</code>.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">⏱️ 3. 4-Tier Rate Limiting</div>
+        <ul style="font-size: 11.5px; margin-left: 16px;">
+          <li><strong>Global API:</strong> 300 requests / 15 min per IP.</li>
+          <li><strong>Login Limiter:</strong> 10 attempts / 15 min (Anti-Brute-Force).</li>
+          <li><strong>OTP Dispatch:</strong> 6 requests / 15 min (Anti-SMS Bombing).</li>
+          <li><strong>OTP Verify:</strong> 12 attempts / 15 min (Anti-Pin Brute-Force).</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">🌐 4. Network & Input Sanitization</div>
+        <ul style="font-size: 11.5px; margin-left: 16px;">
+          <li><strong>Helmet Headers:</strong> Automated headers prevent Clickjacking and XSS.</li>
+          <li><strong>CORS Whitelist:</strong> Only allowed origins (<code>*.vercel.app</code>, localhost) accepted.</li>
+          <li><strong>ReDoS Defense:</strong> Phone numbers stripped of non-digits before regex matching.</li>
+          <li><strong>Payload Capping:</strong> <code>express.json({ limit: '2mb' })</code> prevents Large-Payload DoS.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>8. Cloud Deployment & CI/CD Pipeline</h2>
+    <div class="flow-diagram">
++----------------------+         +-----------------------+         +-----------------------+
+|  Developer Workstation|  Git   |  GitHub Repository   | Webhook |  Vercel Edge Network  |
+|  (VS Code / Localhost)+------->|  careerbridgeai.git   +-------->|  (React Vite SPA)     |
++----------------------+  Push   +-----------+-----------+ Trigger +-----------+-----------+
+                                             |                                 |
+                                             | Webhook                         | API Requests
+                                             v Trigger                         v (HTTPS / CORS)
+                                 +-----------------------+         +-----------------------+
+                                 |  Render Cloud Service |<--------+  Node.js API Server   |
+                                 |  (Auto Build & Deploy)|         |  (Port 5000 /api)     |
+                                 +-----------+-----------+         +-----------+-----------+
+                                             |                                 |
+                                             | TLS Connection                  | Queries
+                                             v (Port 27017)                    v
+                                 +---------------------------------------------------------+
+                                 |          MongoDB Atlas Cloud Sharded Cluster            |
+                                 +---------------------------------------------------------+
+    </div>
+
+    <div class="footer-bar">
+      <span>CareerBridgeAI Documentation</span>
+      <span>Page 5 of 6</span>
+    </div>
+  </div>
+
+  <!-- ==================== SECTION 6: VIVA / PRESENTATION GUIDE ==================== -->
+  <div class="page">
+    <div class="header-bar">
+      <span>CareerBridgeAI Technical Dossier</span>
+      <span>Viva / Presentation Reference Guide</span>
+    </div>
+
+    <h2>9. Project Presentation & Viva Defense Reference (इंटरव्यू गाइड)</h2>
+
+    <div class="card" style="margin-bottom: 14px;">
+      <div class="card-header">⚡ 30-Second Elevator Pitch</div>
+      <p style="font-size: 12.5px; line-height: 1.5; color: #1e293b;">
+        <em>"CareerBridgeAI is an end-to-end, production-deployed MERN Stack platform integrated with Google Gemini AI. It modernizes campus placements and hiring by providing students with instant AI Resume ATS evaluation and interactive mock interviews, while empowering recruiters with applicant tracking, direct PDF review, and eligibility-filtered job postings. College TPOs can manage recruitment drives and analyze placement statistics, while administrators have full platform governance through an isolated console. The application is secured using OWASP best practices and is live on Vercel and Render."</em>
+      </p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header">❓ Common Question: "How does the AI work?"</div>
+        <p style="font-size: 12px; color: #475569;">
+          <strong>Answer:</strong> The backend uses <code>pdf-parse</code> to extract raw text streams from uploaded PDF resumes. This unstructured text is structured into a specialized prompt fed into the Google Gemini LLM SDK, which computes ATS keyword density, formatting compliance, and missing technical skills, returning a validated JSON response to the client in under 2 seconds.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">❓ Common Question: "How is security handled?"</div>
+        <p style="font-size: 12px; color: #475569;">
+          <strong>Answer:</strong> We implement defense-in-depth: Bcrypt password hashing (10 rounds), stateless JWT auth with role-based middleware guards, Multer cryptographic filename randomization with MIME-type verification, Helmet HTTP security headers, and 4-tier rate limiting to prevent brute-force attacks on login and OTP routes.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">❓ Common Question: "Why MERN over relational SQL?"</div>
+        <p style="font-size: 12px; color: #475569;">
+          <strong>Answer:</strong> MongoDB's document model matches the nested, polymorphic structure of candidate profiles (varying numbers of projects, skills, certifications, and work experiences). Combined with JSON-based REST APIs, MERN eliminates ORM impedance mismatch and allows seamless data flow from React to Node to Mongo.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">❓ Common Question: "How are OTPs made resilient?"</div>
+        <p style="font-size: 12px; color: #475569;">
+          <strong>Answer:</strong> OTPs use MongoDB TTL (Time-To-Live) indexes for automated 10-minute cleanup. Our unified auth flow handles both login and auto-registration seamlessly. When SMS gateways hit trial limits, the system provides transparent fallback codes ensuring users are never blocked during demonstration.
+        </p>
+      </div>
+    </div>
+
+    <div class="feature-box success" style="margin-top: 20px;">
+      <h3 style="color: #065f46;">🌐 Live Deployment Credentials & Verification</h3>
+      <p style="font-size: 12px; color: #065f46; margin-bottom: 4px;">
+        &bull; <strong>Live App:</strong> <a href="https://careerbridgeai-coral.vercel.app/" target="_blank" style="color: #4f46e5; text-decoration: underline;">https://careerbridgeai-coral.vercel.app/</a> &nbsp;|&nbsp; 
+        &bull; <strong>API Health:</strong> <a href="https://careerbridgeai-ylvb.onrender.com/api/health" target="_blank" style="color: #4f46e5; text-decoration: underline;">https://careerbridgeai-ylvb.onrender.com/api/health</a>
+      </p>
+      <p style="font-size: 12px; color: #065f46;">
+        &bull; <strong>Demo Student:</strong> <code>student@careerbridge.com</code> (password123) &nbsp;|&nbsp; 
+        &bull; <strong>Demo Admin:</strong> <code>admin@careerbridge.com</code> (admin123) at <code>/admin/login</code>
+      </p>
+    </div>
+
+    <div class="footer-bar">
+      <span>CareerBridgeAI Documentation &bull; Developed by Suman Kumar</span>
+      <span>Page 6 of 6</span>
+    </div>
+  </div>
+
+</body>
+</html>

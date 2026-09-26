@@ -17,6 +17,7 @@ import StudentDashboard from './pages/student/StudentDashboard';
 import ResumeAnalyzerPage from './pages/student/ResumeAnalyzerPage';
 import AIInterviewPrepPage from './pages/student/AIInterviewPrepPage';
 import AICareerAssistantPage from './pages/student/AICareerAssistantPage';
+import StudentProfilePage from './pages/student/StudentProfilePage';
 
 // Recruiter Pages
 import RecruiterDashboard from './pages/recruiter/RecruiterDashboard';
@@ -80,7 +81,7 @@ function App() {
         <Route path="/student/interview-prep" element={<AIInterviewPrepPage />} />
         <Route path="/student/ai-assistant" element={<AICareerAssistantPage />} />
         <Route path="/student/skill-gap" element={<ResumeAnalyzerPage />} />
-        <Route path="/student/profile" element={<StudentDashboard />} />
+        <Route path="/student/profile" element={<StudentProfilePage />} />
       </Route>
 
       {/* Recruiter Protected Portal */}

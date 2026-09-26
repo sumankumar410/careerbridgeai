@@ -3,6 +3,8 @@ import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { RefreshCw, CheckCircle2, Shield } from 'lucide-react';
 
+const DEFAULT_GOOGLE_CLIENT_ID = '905553787362-uqma7nud1e940e55sjhu9qcamo98me5t.apps.googleusercontent.com';
+
 const GoogleSignInButton = ({ text = 'Continue with Google', role = 'student', onError }) => {
   const { loginWithGoogle } = useAuth();
   const navigate = useNavigate();
@@ -18,7 +20,7 @@ const GoogleSignInButton = ({ text = 'Continue with Google', role = 'student', o
   };
 
   React.useEffect(() => {
-    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || DEFAULT_GOOGLE_CLIENT_ID;
     if (clientId && window.google?.accounts?.id) {
       try {
         window.google.accounts.id.initialize({
@@ -42,7 +44,7 @@ const GoogleSignInButton = ({ text = 'Continue with Google', role = 'student', o
   }, [role]);
 
   const handleGoogleClick = () => {
-    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || DEFAULT_GOOGLE_CLIENT_ID;
 
     if (clientId && window.google?.accounts?.id) {
       setLoading(true);

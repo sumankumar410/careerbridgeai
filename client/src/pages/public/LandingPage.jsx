@@ -62,9 +62,14 @@ const LandingPage = () => {
                 <div className="w-3 h-3 rounded-full bg-emerald-500" />
                 <span className="text-xs font-mono text-slate-400 ml-2">careerbridgeai.platform/dashboard</span>
               </div>
-              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 border border-emerald-200 dark:border-emerald-800">
-                Live Preview
-              </span>
+              <Link
+                to="/login?demo=student"
+                className="text-xs font-bold px-3.5 py-1.5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-md shadow-emerald-500/20 transition-all flex items-center gap-1.5 cursor-pointer animate-pulse"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>⚡ Launch Live Student Preview</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

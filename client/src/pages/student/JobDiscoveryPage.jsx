@@ -89,12 +89,8 @@ const JobDiscoveryPage = () => {
     setSelectedJob(job);
     setModalError('');
     setResumeFile(null);
-    // Default to existing resume if available, otherwise force new upload
-    if (profile?.resumeUrl) {
-      setResumeSource('existing');
-    } else {
-      setResumeSource('new');
-    }
+    // Always default to 'new' so student is prompted to select a PDF resume file
+    setResumeSource('new');
   };
 
   const handleCloseModal = () => {

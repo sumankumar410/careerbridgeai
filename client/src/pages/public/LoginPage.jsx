@@ -21,34 +21,8 @@ const LoginPage = () => {
   const [successMsg, setSuccessMsg] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { login, sendOtp, loginWithOtp, loginWithGoogle } = useAuth();
+  const { login, sendOtp, loginWithOtp } = useAuth();
   const navigate = useNavigate();
-
-  const handleInstantDemoLogin = async () => {
-    setLoading(true);
-    setError('');
-    try {
-      const res = await loginWithGoogle({
-        email: 'student@careerbridge.com',
-        name: 'Demo Student',
-        avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=DemoStudent&backgroundColor=4f46e5',
-        role: 'student',
-        isDevSimulation: true
-      });
-      if (res?.user) redirectByRole(res.user);
-    } catch (err) {
-      setError(err.message || 'Live demo preview login failed.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('demo') === 'student') {
-      handleInstantDemoLogin();
-    }
-  }, []);
 
   // Timer countdown for resend OTP
   useEffect(() => {
@@ -256,19 +230,9 @@ const LoginPage = () => {
 
 
 
-          {/* Live Demo Preview & Google Sign In Option */}
+          {/* Google Sign In Option */}
           {portal === 'user' && (
-            <div className="space-y-3">
-              <button
-                type="button"
-                onClick={handleInstantDemoLogin}
-                disabled={loading}
-                className="w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-600 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-xs shadow-md shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer border border-emerald-400/30"
-              >
-                <Sparkles className="w-4 h-4 text-emerald-200 animate-spin" />
-                <span>⚡ 1-Click Live Student Preview (Instant Demo)</span>
-              </button>
-
+            <div className="space-y-4">
               <GoogleSignInButton 
                 text="Continue with Google" 
                 role="student" 
